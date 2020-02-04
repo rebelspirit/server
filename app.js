@@ -1,6 +1,7 @@
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
+const forceSsl = require('express-force-ssl');
 const express = require('express');
 const config = require('config');
 const path = require('path');
@@ -17,11 +18,7 @@ const app = express();
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(httpsOptions, app);
 
-app.use((req, res, next) => {
-   if(req.protocol === 'http') {
-       res.redirect(301, `https://${req.headers.host}${req.url}`)
-   }
-});
+app.use(forceSsl);
 
 app.use(cors());
 
@@ -38,6 +35,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const PORT = config.get('port') || 5000;
+const PORTHTTPS = config.get('portHttps') || 443;
 
 const start = async () => {
     try {
@@ -46,8 +44,8 @@ const start = async () => {
             useUnifiedTopology: true,
             useCreateIndex: true
         });
-        httpServer.listen(PORT, () => console.log(`App has been started on port ${PORT}..`));
-        httpsServer.listen(8080, () => console.log(`App has been started on port 8080..`));
+        httpServer.listen(PORTHTTPS, () => console.log(`App has been started on port ${PORTHTTPS}..`));
+        httpsServer.listen(PORT, () => console.log(`App has been started on port ${PORT}..`));
     } catch (e) {
         console.log('Server Error', e.message)
     }
