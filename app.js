@@ -1,10 +1,27 @@
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 const express = require('express');
 const config = require('config');
 const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const httpsOptions = {
+    cert: fs.readFileSync('./ssl/godsavethequeen_website.crt'),
+    ca: fs.readFileSync('./ssl/godsavethequeen_website.ca-bundle'),
+    p7b: fs.readFileSync('./ssl/godsavethequeen_website.p7b')
+};
+
 const app = express();
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(httpsOptions, app);
+
+app.use((req, res, next) => {
+   if(req.protocol === 'http') {
+       res.redirect(301, `https://${req.headers.host}${req.url}`)
+   }
+});
 
 app.use(cors());
 
@@ -29,7 +46,8 @@ const start = async () => {
             useUnifiedTopology: true,
             useCreateIndex: true
         });
-        app.listen(PORT, () => console.log(`App has been started on port ${PORT}..`));
+        httpServer.listen(PORT, () => console.log(`App has been started on port ${PORT}..`));
+        httpsServer.listen(8080, () => console.log(`App has been started on port 8080..`));
     } catch (e) {
         console.log('Server Error', e.message)
     }

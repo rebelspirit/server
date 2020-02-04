@@ -1,6 +1,6 @@
 {
-  "port": 5000,
+  "port": 80,
   "jwtSecret": "iploggersecretkey",
   "mongoURL": "mongodb+srv://root:P@ssw0rd00@cluster0-dftik.mongodb.net/app?retryWrites=true&w=majority",
-  "baseUrl": "http://localhost:5000"
+  "baseUrl": "http://godsavethequeen.website"
 }
