@@ -1,0 +1,6 @@
+{
+  "port": 5000,
+  "jwtSecret": "iploggersecretkey",
+  "mongoURL": "mongodb+srv://root:P@ssw0rd00@cluster0-dftik.mongodb.net/app?retryWrites=true&w=majority",
+  "baseUrl": "http://localhost:5000"
+}
