@@ -8,10 +8,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+//const hostname = 'godsavethequeen.website';
 const httpsOptions = {
     cert: fs.readFileSync('./ssl/godsavethequeen_website.crt'),
     ca: fs.readFileSync('./ssl/godsavethequeen_website.ca-bundle'),
-    p7b: fs.readFileSync('./ssl/godsavethequeen_website.p7b')
+    key: fs.readFileSync('./ssl/key.key')
 };
 
 const app = express();
@@ -44,8 +45,8 @@ const start = async () => {
             useUnifiedTopology: true,
             useCreateIndex: true
         });
-        httpServer.listen(PORTHTTPS, () => console.log(`App has been started on port ${PORTHTTPS}..`));
-        httpsServer.listen(PORT, () => console.log(`App has been started on port ${PORT}..`));
+        httpServer.listen(PORT, () => console.log(`App has been started on port ${PORT}..`));
+        httpsServer.listen(PORTHTTPS, () => console.log(`App has been started on port ${PORTHTTPS}..`));
     } catch (e) {
         console.log('Server Error', e.message)
     }
